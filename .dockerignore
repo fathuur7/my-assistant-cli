@@ -1,0 +1,43 @@
+# Node modules
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build outputs
+dist
+tmp
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Test files
+test
+coverage
+*.test.ts
+*.test.js
+
+# Documentation
+*.md
+!README.md
+
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.backup
+test-*.js
+test-*.jsx
