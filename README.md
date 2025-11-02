@@ -509,7 +509,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 - 🐛 [Report Bug](https://github.com/fathuur7/my-assistant-cli/issues)
 - 💡 [Request Feature](https://github.com/fathuur7/my-assistant-cli/issues)
-- 📧 Email: fathur@example.com
+- 📧 Email: kopisusu8ip@gmail.com
 - 💬 [Discussions](https://github.com/fathuur7/my-assistant-cli/discussions)
 
 ---
