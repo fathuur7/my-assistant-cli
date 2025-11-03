@@ -483,16 +483,22 @@ TUGAS ANDA:
 ${context.shell === 'powershell' ? `
 PENTING - SINTAKS POWERSHELL:
 - Gunakan New-Item untuk membuat file/folder: New-Item -ItemType Directory -Force -Path "src/components"
-- Untuk menulis file dengan indentasi bagus, gunakan here-string @" "@ DALAM SATU BARIS:
-  BENAR: New-Item -Path "file.js" -ItemType File -Force ; @"[newline]kode di sini[newline]"@ | Out-File -FilePath "file.js" -Encoding utf8
-  SALAH: Jangan pisahkan @" dan "@ ke baris berbeda dalam command string
-- Format here-string: Semua konten antara @" dan "@ harus ada dalam command yang sama
-- Gunakan \`n untuk newline dalam string literal jika perlu
-- JANGAN tulis semua kode dalam satu baris tanpa indentasi
+- Untuk menulis file dengan konten multi-line, gunakan ARRAY dengan -join untuk proper line breaks:
+  
+  CONTOH BENAR (HTML file): 
+  @('<!DOCTYPE html>', '<html lang="en">', '<head>', '  <meta charset="UTF-8">', '  <title>My Page</title>', '</head>', '<body>', '  <h1>Hello</h1>', '</body>', '</html>') -join "\`r\`n" | Out-File -FilePath "index.html" -Encoding utf8
+  
+  CONTOH BENAR (JS file):
+  @('const message = "Hello";', 'console.log(message);') -join "\`r\`n" | Out-File -FilePath "app.js" -Encoding utf8
+
+- PENTING: Gunakan array syntax @('line1', 'line2', 'line3') dengan -join "\`r\`n"
+- Setiap line adalah string terpisah dalam array
+- Indentasi menggunakan spasi dalam string: '  <meta>' untuk 2 spaces indent
+- WAJIB gunakan double quotes untuk string yang berisi single quotes
+- Gunakan single quotes untuk string yang berisi double quotes
 - JANGAN gunakan mkdir -p (Unix), gunakan New-Item -ItemType Directory -Force
-- JANGAN gunakan touch (Unix), gunakan New-Item -ItemType File
+- JANGAN gunakan touch (Unix), gunakan New-Item -ItemType File  
 - Gunakan semicolon (;) untuk menggabungkan perintah, bukan &&
-- PASTIKAN kode hasil generate memiliki indentasi yang benar menggunakan \`n dan spasi
 ` : context.shell === 'cmd' ? `
 PENTING - SINTAKS CMD:
 - Gunakan mkdir untuk folder (otomatis rekursif di Windows)
@@ -522,27 +528,47 @@ SUGGESTIONS: <alternatif1> | <alternatif2>
 ATURAN:
 1. JANGAN berikan penjelasan tambahan
 2. JANGAN gunakan markdown
-3. Gunakan ${context.packageManager} untuk install packages
-4. Jika tidak bisa dijadikan command, return: ERROR: Bukan perintah shell
-5. SELALU berikan 2-3 suggestions (alternatif command)
-6. PASTIKAN command sesuai dengan shell ${context.shell}
+3. Gunakan ${context.packageManager} untuk install packages (npm, yarn, pnpm)
+4. SELALU convert natural language ke shell command (install, create, setup, dll adalah valid)
+5. Framework installation (React, Next.js, Vue, dll) HARUS generate command
+6. Hanya return "ERROR: Bukan perintah shell" jika benar-benar bukan aksi (misal: "apa itu NextJS?", "jelaskan React")
+7. SELALU berikan 2-3 suggestions (alternatif command)
+8. PASTIKAN command sesuai dengan shell ${context.shell}
 
 CONTOH ${context.shell === 'powershell' ? 'POWERSHELL' : 'BASH'}:
 ${context.shell === 'powershell' ? `
 User: buat file Button di src/components
 Output:
-COMMAND: New-Item -ItemType Directory -Force -Path "src/components" ; "export default function Button() {\`n  return <button>Click me</button>\`n}" | Out-File -FilePath "src/components/Button.js" -Encoding utf8
-SUGGESTIONS: buat dengan VSCode | gunakan template component | buat manual
+COMMAND: @('export default function Button() {', '  return <button>Click me</button>', '}') -join "\`r\`n" | Out-File -FilePath "src/components/Button.jsx" -Encoding utf8
+SUGGESTIONS: buat dengan TypeScript | tambahkan props | buat di folder lain
 
-User: buat file Header.jsx dengan props title
+User: install NextJS
 Output:
-COMMAND: New-Item -ItemType Directory -Force -Path "src/components" ; "import React from 'react'\`n\`nexport default function Header({ title }) {\`n  return (\`n    <header>\`n      <h1>{title}</h1>\`n    </header>\`n  )\`n}" | Out-File -FilePath "src/components/Header.jsx" -Encoding utf8
-SUGGESTIONS: tambahkan TypeScript | tambahkan styling | export named
+COMMAND: npx create-next-app@latest my-next-app
+SUGGESTIONS: install dengan TypeScript | install dengan App Router | install dengan tailwind
+
+User: install react dan axios
+Output:
+COMMAND: ${context.packageManager} install react react-dom axios
+SUGGESTIONS: install dengan TypeScript | tambah react-query | gunakan fetch
+
+User: setup project next.js dengan tailwind
+Output:
+MULTI_STEP
+STEP1: npx create-next-app@latest my-app --tailwind
+STEP2: cd my-app
+STEP3: ${context.packageManager} install
+SUGGESTIONS: menggunakan create-next-app template | manual setup tailwind | tambahkan shadcn
 ` : `
 User: install react dan axios
 Output:
 COMMAND: ${context.packageManager} install react axios react-dom
 SUGGESTIONS: npm install react axios | yarn add react axios | pnpm add react axios
+
+User: install NextJS
+Output:
+COMMAND: npx create-next-app@latest my-next-app
+SUGGESTIONS: with TypeScript | with App Router | with Tailwind
 
 User: setup project next.js dengan tailwind
 Output:
