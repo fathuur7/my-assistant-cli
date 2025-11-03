@@ -2,6 +2,7 @@
 
 > **Powerful AI-powered CLI tool** untuk generate commands, fix errors, dan review code menggunakan Google Gemini AI.
 
+[![CI](https://github.com/fathuur7/my-assistant-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/fathuur7/my-assistant-cli/actions/workflows/ci.yml)
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
