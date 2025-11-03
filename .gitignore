@@ -94,5 +94,5 @@ test-demo.js
 
 # Package files
 *.tgz
-package-lock.json
+# package-lock.json - REQUIRED for CI workflow, do not ignore!
 
